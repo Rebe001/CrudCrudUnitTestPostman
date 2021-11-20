@@ -9,7 +9,7 @@
 * [Author](#author)
 
 ## Introduction
-This project is a part of CRUD API REST demo. Please visit test plan and integration testing for more details.
+This project is a part of CRUD API REST demo. Please visit  [test plan](https://github.com/Rebe001/CrudCrudUnitTestPostman) and [integration testing](https://github.com/Rebe001/CrudCrudIntegrationAPITest) for more details.
 
 This postman project is to automate unit tests for the API Rest. API creation is supported by Crud Crud http://crudcrud.com, and resources `chargers` has been created.
 Here are the list of APIs that will be tested in this project:

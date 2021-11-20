@@ -1,0 +1,877 @@
+{
+	"info": {
+		"_postman_id": "ce811a3e-d075-4af6-a192-56ef0b68aad6",
+		"name": "Chargers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get endpoint identifier from crud crud",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const $ = cheerio.load(pm.response.text())\r",
+							"postman.setEnvironmentVariable(\"endpoint identifier\", $('.is-primary').attr('href').replace('/Dashboard/',''));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a charger entity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"var responseJson = response.json();\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"id\", responseJson._id);\r",
+							"\r",
+							"pm.test(\"http Header content type is application/json; charset=utf-8\", function () {\r",
+							"    pm.expect(response.to.be.header('Content-Type','application/json; charset=utf-8'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.expect(response.to.have.status(201));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is not null\", function () {\r",
+							"    pm.expect(responseJson).not.equal(null);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Charger field values accepted string, int, null and undefined type\", function () {\r",
+							"    pm.expect(responseJson.model).to.be.a('string'); \r",
+							"    pm.expect(responseJson.price).to.be.a('number'); \r",
+							"    pm.expect(responseJson.power).to.be.null;\r",
+							"    pm.expect(responseJson.priceCurrency).to.be.undefined;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Id is generated\", function () {\r",
+							"    pm.expect(responseJson).to.have.property('_id');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": \"Commander 2\",\r\n    \"price\": 959,\r\n    \"power\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a charger entity with non json schema",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 415\", function () {\r",
+							"    pm.expect(response.to.have.status(415));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": \"Commander 2\",\r\n    \"price\": 959,\r\n    \"power\": \"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all charger entities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"var responseJson = response.json();\r",
+							"\r",
+							"pm.test(\"http Header content type is application/json; charset=utf-8\", function () {\r",
+							"    pm.expect(response.to.be.header('Content-Type','application/json; charset=utf-8'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.expect(response.to.have.status(200));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is not null\", function () {\r",
+							"    pm.expect(responseJson).not.equal(null);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is an array\", function () {\r",
+							"    pm.expect(responseJson).to.be.a('array'); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a charger entity by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"var responseJson = response.json();\r",
+							"\r",
+							"pm.test(\"http Header content type is application/json; charset=utf-8\", function () {\r",
+							"    pm.expect(response.to.be.header('Content-Type','application/json; charset=utf-8'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.expect(response.to.have.status(200));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is not null\", function () {\r",
+							"    pm.expect(responseJson).not.equal(null);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is not a array\", function () {\r",
+							"    pm.expect(responseJson).not.to.be.a('array'); \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a charger entity by not existing id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{non existing id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{non existing id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a charger entity by non guid format id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{non guid format id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{non guid format id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a charger entity by special character id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.expect(response.to.have.status(400));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/%$",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"%$"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.expect(response.to.have.status(200));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity with non-Json schema",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 415\", function () {\r",
+							"    pm.expect(response.to.have.status(415));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity and id is absent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.expect(response.to.have.status(405));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity and non guid format id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{non guid format id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{non guid format id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity and non existing id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{non existing id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{non existing id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity and empty space id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/   ",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"   "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a charger entity and special character id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.expect(response.to.have.status(400));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Model\":\"Commander 3\",\r\n   \"Price\": 1424.00,\r\n   \"Power\":\"22kW\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/%$",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"%$"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a charger from id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.expect(response.to.have.status(200));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a charger from id and id is absent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.expect(response.to.have.status(405));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a charger from id and not existing guid id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{non existing id}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{non existing id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a charger from id and wrong guid format id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response;\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(response.to.have.status(404));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://crudcrud.com/api/{{endpoint identifier}}/chargers/{{no guid format}}",
+					"protocol": "https",
+					"host": [
+						"crudcrud",
+						"com"
+					],
+					"path": [
+						"api",
+						"{{endpoint identifier}}",
+						"chargers",
+						"{{no guid format}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
